@@ -1,0 +1,25 @@
+# ?? ??
+server:
+  port: 8080
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+
+spring:
+  datasource:
+      hikari:
+        jdbc-url: jdbc:mariadb://localhost:3306/harumarket?autoReconnect=true&serverTimezone=UTC&characterEncoding=UTF-8
+        username: root
+        password: ruby1813!
+        driver-class-name: org.mariadb.jdbc.Driver
+        connection-timeout: 30000 # ?? ???? (???) - ??? ?? ??
+        idle-timeout: 600000 # ?? ?? ???? (???) - ??? ?? ??
+        max-lifetime: 1800000 # ?? ?? (???) - ??? ?? ??
+        maximum-pool-size: 10 # ?? connection pool ?? - ??? ?? ??
+  jpa:
+    show-sql: true
+
+jwt:
+  issuer: haru1813@naver.com
+  secret_key: haru
