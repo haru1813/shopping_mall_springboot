@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="common">
+    <select id="category" resultType="java.util.HashMap">
+        <![CDATA[
+            select
+                    t1.haruMarket_productCategory_index
+                ,   t1.haruMarket_productCategory_name
+            from    harumarket_productcategory t1
+            where   t1.haruMarket_productCategory_view=1;
+        ]]>
+    </select>
+    <select id="advertise" resultType="java.util.HashMap">
+        <![CDATA[
+            select
+                t1.harumarket_product_name
+                ,	t1.harumarket_product_insertTime
+                ,   t1.harumarket_product_picture
+                ,   format(t1.harumarket_product_originPrice,0) harumarket_product_originPrice
+                ,   format(t1.harumarket_product_salePrice,0) harumarket_product_salePrice
+                ,   t1.harumarket_product_index
+            from	harumarket_product t1
+            where   t1.harumarket_product_view=1
+            and     t1.harumarket_product_advertiseView=1;
+        ]]>
+    </select>
+    <select id="new_products" resultType="java.util.HashMap">
+        <![CDATA[
+            select
+                t1.harumarket_product_name
+                ,	t1.harumarket_product_insertTime
+                ,   t1.harumarket_product_picture
+                ,   format(t1.harumarket_product_originPrice,0) harumarket_product_originPrice
+                ,   format(t1.harumarket_product_salePrice,0) harumarket_product_salePrice
+                ,   t1.harumarket_product_index
+            from	harumarket_product t1
+            where   t1.harumarket_product_view=1
+            order by t1.harumarket_product_insertTime desc
+            limit 30;
+        ]]>
+    </select>
+</mapper>
