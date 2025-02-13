@@ -1,9 +1,8 @@
-package park.haru.common;
+package park.haru.common.dao;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import park.haru.common.model.harumarket_productcategory;
 
 import java.util.HashMap;
 import java.util.List;
