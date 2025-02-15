@@ -1,0 +1,17 @@
+<!--<Configuration>-->
+<!--    <Appenders>-->
+<!--        <Console name="CONSOLE" target="SYSTEM_OUT">-->
+<!--            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>-->
+<!--        </Console>-->
+<!--    </Appenders>-->
+<!--    <Loggers>-->
+<!--        <Logger name="jdbc.sqlonly" level="INFO" additivity="false">-->
+<!--            <AppenderRef ref="CONSOLE"/>-->
+<!--        </Logger>-->
+<!--        <Root level="INFO">-->
+<!--            <AppenderRef ref="CONSOLE"/>-->
+<!--        </Root>-->
+<!--    </Loggers>-->
+<!--</Configuration>-->
+
+<Configuration></Configuration>

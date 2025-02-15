@@ -90,4 +90,221 @@
         order by t1.harumarket_product_insertTime desc
         limit ${page},30;
     </select>
+
+    <!-- ProductSearchDao -->
+    <select id="category_select" resultType="java.util.HashMap">
+        select
+        t1.haruMarket_productCategory_index
+        ,   t1.haruMarket_productCategory_name
+        from    harumarket_productcategory t1
+        <where>
+            t1.haruMarket_productCategory_view=1
+        </where>
+    </select>
+
+    <select id="total_page2" parameterType="java.util.Map" resultType="int">
+        select
+            count(*) total
+        from	harumarket_product t1
+        <where>
+            t1.harumarket_product_view=1
+            <if test="haruMarket_productCategory_index != 0">
+                and t1.haruMarket_productCategory_index=${haruMarket_productCategory_index}
+            </if>
+            <if test="harumarket_product_name != ''">
+                and t1.harumarket_product_name like '%${harumarket_product_name}%'
+            </if>
+        </where>
+    </select>
+
+    <select id="page_view2" parameterType="java.util.Map" resultType="java.util.HashMap">
+        select
+        t1.harumarket_product_index
+        ,   t1.harumarket_product_name
+        ,	t1.harumarket_product_insertTime
+        ,   t1.harumarket_product_picture
+        ,   format(t1.harumarket_product_originPrice,0) harumarket_product_originPrice
+        ,   format(t1.harumarket_product_salePrice,0) harumarket_product_salePrice
+        ,   t1.harumarket_product_index
+        from	harumarket_product t1
+        <where>
+            t1.harumarket_product_view=1
+            <if test="haruMarket_productCategory_index != 0">
+                and t1.haruMarket_productCategory_index=${haruMarket_productCategory_index}
+            </if>
+            <if test="harumarket_product_name != ''">
+                and t1.harumarket_product_name like '%${harumarket_product_name}%'
+            </if>
+        </where>
+        order by t1.harumarket_product_insertTime desc
+        limit ${page},30;
+    </select>
+
+    <!-- JoinDAO -->
+    <select id="join_check" parameterType="String" resultType="int">
+        select
+            count(*) count
+        from harumarket_user
+        <where>
+            haruMarket_user_uniqueKey=#{haruMarket_user_uniqueKey}
+        </where>
+    </select>
+    
+    <insert id="join" parameterType="java.util.Map">
+        insert into harumarket_user(
+        haruMarket_user_id,
+        haruMarket_user_pw,
+        haruMarket_user_postCode,
+        haruMarket_user_basicAddress,
+        haruMarket_user_detailAddress,
+        haruMarket_user_birthday,
+        haruMarket_user_gender,
+        haruMarket_user_name,
+        haruMarket_user_phone,
+        haruMarket_user_uniqueKey,
+        haruMarket_user_role
+        ) values(
+        #{haruMarket_user_id},
+        #{haruMarket_user_pw},
+        #{haruMarket_user_postCode},
+        #{haruMarket_user_basicAddress},
+        #{haruMarket_user_detailAddress},
+        #{haruMarket_user_birthday},
+        #{haruMarket_user_gender},
+        #{haruMarket_user_name},
+        #{haruMarket_user_phone},
+        #{haruMarket_user_uniqueKey},
+        #{haruMarket_user_role}
+        )
+    </insert>
+
+    <select id="haruMarket_user_index" parameterType="java.util.Map" resultType="int">
+        select
+        haruMarket_user_index
+        from harumarket_user
+        <where>
+            haruMarket_user_id=#{haruMarket_user_id}
+        </where>
+    </select>
+
+    <insert id="tokenCreate" parameterType="java.util.Map">
+        insert into harumarket_usertoken(
+            haruMarket_user_index,
+            harumarket_userToken_ActiveToken,
+            harumarket_userToken_RefreshToken
+        )
+        values(
+            ${haruMarket_user_index},
+            #{harumarket_userToken_ActiveToken},
+            #{harumarket_userToken_RefreshToken}
+        )
+    </insert>
+
+    <!-- LoginDAO -->
+    <select id="Authentication" parameterType="String" resultType="java.util.HashMap">
+        select
+                t1.haruMarket_user_index
+            ,   t1.haruMarket_user_id
+            ,   t1.haruMarket_user_pw
+        from    harumarket_user t1
+        <where>
+            t1.haruMarket_user_id=#{haruMarket_user_id}
+        </where>
+    </select>
+
+    <update id="Authentication_token" parameterType="java.util.Map">
+        update  harumarket_usertoken
+        set     harumarket_userToken_ActiveToken=#{harumarket_userToken_ActiveToken},
+        harumarket_userToken_RefreshToken=#{harumarket_userToken_RefreshToken}
+        <where>
+            haruMarket_user_index=${haruMarket_user_index}
+        </where>
+    </update>
+
+    <select id="Authorization" parameterType="int" resultType="java.util.HashMap">
+        select
+        t1.haruMarket_user_index
+        ,   t1.haruMarket_user_id
+        ,   t1.haruMarket_user_pw
+        ,   t1.haruMarket_user_role
+        from    harumarket_user t1
+        <where>
+            t1.haruMarket_user_index=${haruMarket_user_index}
+        </where>
+    </select>
+
+    <!-- TokenDAO -->
+    <select id="tokenSelect" parameterType="String" resultType="java.util.HashMap">
+        select
+                    t1.harumarket_userToken_index
+                ,   t1.haruMarket_user_index
+                ,   t1.harumarket_userToken_ActiveToken
+                ,   t1.harumarket_userToken_RefreshToken
+        from    harumarket_usertoken t1
+        <where>
+            t1.harumarket_userToken_ActiveToken=#{harumarket_userToken_ActiveToken}
+        </where>
+    </select>
+
+    <update id="tokenUpdate">
+        update  harumarket_usertoken
+        set     harumarket_userToken_ActiveToken=#{harumarket_userToken_ActiveToken},
+        harumarket_userToken_RefreshToken=#{harumarket_userToken_RefreshToken}
+        <where>
+            harumarket_userToken_index=${harumarket_userToken_index}
+        </where>
+    </update>
+
+    <!-- FindDao -->
+    <select id="findUser" parameterType="java.util.Map" resultType="java.util.HashMap">
+        select
+            *
+        from    harumarket_user
+        <where>
+            haruMarket_user_uniqueKey=#{haruMarket_user_uniqueKey}
+            <if test="haruMarket_user_id != ''">
+                and haruMarket_user_id=#{haruMarket_user_id}
+            </if>
+        </where>
+    </select>
+
+    <update id="updatePw" parameterType="java.util.Map">
+        update harumarket_user set
+        haruMarket_user_pw=#{haruMarket_user_pw},
+        haruMarket_user_updateTime=now(),
+        haruMarket_user_updateUserIndex=#{haruMarket_user_index}
+        <where>
+            haruMarket_user_index=#{haruMarket_user_index}
+        </where>
+    </update>
+    
+    <!-- ProductViewDao -->
+    <select id="product_view" parameterType="int" resultType="java.util.HashMap">
+        select
+            t1.harumarket_product_index
+        ,   t1.harumarket_product_name
+        ,	t1.harumarket_product_insertTime
+        ,   t1.harumarket_product_picture
+        ,   format(t1.harumarket_product_originPrice,0) harumarket_product_originPrice
+        ,   format(t1.harumarket_product_salePrice,0) harumarket_product_salePrice
+        ,   t1.harumarket_product_content
+        ,   t1.harumarket_product_sizeView
+        ,   t1.harumarket_product_colorView
+        ,   t1.harumarket_product_colorIndexs
+        ,   t1.harumarket_product_sizeIndexs
+        from	harumarket_product t1
+        <where>
+                    t1.harumarket_product_view=1
+            and     t1.harumarket_product_index=${harumarket_product_index}
+        </where>
+    </select>
+
+    <select id="harumarket_product_optionSelect" parameterType="java.util.Map" resultType="java.util.HashMap">
+        select
+            *
+        from ${table_name} t1
+        <where>
+            t1.${option_name} in ${harumarket_product_optionIndexs}
+        </where>
+    </select>
 </mapper>

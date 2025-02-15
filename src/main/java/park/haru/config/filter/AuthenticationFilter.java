@@ -11,21 +11,26 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import park.haru.common.service.LoginService;
 import park.haru.config.auth.User;
 import park.haru.config.auth.UserAuth;
+import park.haru.config.jwt.JwtProperties;
 import park.haru.config.jwt.TokenProvider;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
+// 인증
 @RequiredArgsConstructor
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
     private final TokenProvider tokenProvider;
-    public static final Duration ACCESS_TOKEN_DURATION = Duration.ofMinutes(30);
+    private final LoginService loginService;
+    private final JwtProperties jwtProperties;
     String TOKEN_PREFIX = "Bearer ";
-    String HEADER_STRING = "Authorization";
 
     // login : post
     // 인증
@@ -57,6 +62,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .haruMarket_user_index(userAuth.getIndex())
                 .build();
 
-        response.addHeader(HEADER_STRING, TOKEN_PREFIX+tokenProvider.generateToken(user,ACCESS_TOKEN_DURATION));
+        Map<String, String> map = new HashMap<>();
+        map.put("haruMarket_user_index", String.valueOf(user.getHaruMarket_user_index()));
+        map.put("harumarket_userToken_ActiveToken",TOKEN_PREFIX+tokenProvider.generateToken(user,Duration.ofMinutes(jwtProperties.getActive())));
+        map.put("harumarket_userToken_RefreshToken",TOKEN_PREFIX+tokenProvider.generateToken(user,Duration.ofMinutes(jwtProperties.getRefresh())));
+        loginService.Authentication_token(map);
+
+        response.addHeader(jwtProperties.getHeader(), map.get("harumarket_userToken_ActiveToken"));
     }
 }

@@ -6,6 +6,10 @@ server:
       charset: UTF-8
 
 spring:
+  tomcat:
+    max-http-post-size: 20000
+    max-http-form-post-size: 20000
+    max-http-header-size: 20000
   datasource:
       hikari:
         jdbc-url: jdbc:mariadb://localhost:3306/harumarkets?autoReconnect=true&serverTimezone=UTC&characterEncoding=UTF-8
@@ -25,3 +29,6 @@ spring:
 jwt:
   issuer: haru1813@naver.com
   secret_key: haru
+  header: Authorization
+  active: 10
+  refresh: 20

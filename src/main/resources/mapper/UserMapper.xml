@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="user">
+    <!-- BusketDao -->
+    <insert id="harumarket_userbasket_insert" parameterType="java.util.List">
+        INSERT INTO harumarket_userbasket (
+            haruMarket_user_index,
+            harumarket_product_index,
+            harumarket_productColor_index,
+            harumarket_productSize_index,
+            harumarket_userBasket_account
+        )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+                ${item.haruMarket_user_index},
+                ${item.harumarket_product_index},
+                ${item.harumarket_productColor_index},
+                ${item.harumarket_productSize_index},
+                ${item.harumarket_userBasket_account}
+            )
+        </foreach>
+    </insert>
+
+    <select id="harumarket_userbasket_DistinctCount" parameterType="java.util.Map" resultType="int">
+        SELECT count(*) FROM harumarket_userbasket
+        <where>
+            haruMarket_user_index=#{haruMarket_user_index} and
+            harumarket_product_index=#{harumarket_product_index} and
+            harumarket_productColor_index=#{harumarket_productColor_index} and
+            harumarket_productSize_index=#{harumarket_productSize_index}
+        </where>
+    </select>
+
+    <select id="harumarket_userbasket_DistinctCountDetail" parameterType="java.util.Map" resultType="java.util.HashMap">
+        SELECT harumarket_userBasket_account,harumarket_userBasket_index FROM harumarket_userbasket
+        <where>
+            haruMarket_user_index=#{haruMarket_user_index} and
+            harumarket_product_index=#{harumarket_product_index} and
+            harumarket_productColor_index=#{harumarket_productColor_index} and
+            harumarket_productSize_index=#{harumarket_productSize_index}
+        </where>
+    </select>
+
+    <select id="harumarket_userbasket_count" parameterType="int" resultType="int">
+        select
+            count(*)
+        from    harumarket_userbasket
+        <where>
+            haruMarket_user_index=${haruMarket_user_index}
+        </where>
+    </select>
+
+    <insert id="harumarket_userbasket_insert2" parameterType="java.util.Map">
+        INSERT INTO harumarket_userbasket (
+        haruMarket_user_index,
+        harumarket_product_index,
+        harumarket_productColor_index,
+        harumarket_productSize_index,
+        harumarket_userBasket_account
+        )
+        VALUES(
+            ${haruMarket_user_index},
+            ${harumarket_product_index},
+            ${harumarket_productColor_index},
+            ${harumarket_productSize_index},
+            ${harumarket_userBasket_account}
+        )
+    </insert>
+
+    <update id="harumarket_userbasket_update" parameterType="java.util.Map">
+        update harumarket_userbasket set
+        harumarket_userBasket_account=${harumarket_userBasket_account},
+        harumarket_userBasket_updateTime=now(),
+        harumarket_userBasket_updateUserIndex=${haruMarket_user_index}
+        <where>
+            harumarket_userBasket_index=${harumarket_userBasket_index}
+        </where>
+    </update>
+</mapper>
