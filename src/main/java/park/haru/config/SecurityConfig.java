@@ -56,7 +56,6 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorize -> authorize
                 .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
                         .requestMatchers("/user/**").hasAuthority("사용자")
-                        .requestMatchers("/user/**").hasAuthority("관리자")
                         .requestMatchers("/admin/**").hasAuthority("관리자")
 //                .requestMatchers("/api/v1/user/**").hasAnyRole("USER","MANAGER","ADMIN")
 //                .requestMatchers("/api/v1/manager/**").hasAnyRole("MANAGER","ADMIN")
