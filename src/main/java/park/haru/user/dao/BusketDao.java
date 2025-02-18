@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,5 +35,13 @@ public class BusketDao {
 
     public int harumarket_userbasket_update(Map<String, Object> data){
         return sqlSession.insert("user.harumarket_userbasket_update",data);
+    }
+
+    public List<HashMap<String,String>> basket_select(int haruMarket_user_index){
+        return sqlSession.selectList("user.basket_select",haruMarket_user_index);
+    }
+
+    public int basket_delete(Map<String, Object> data){
+        return sqlSession.delete("user.basket_delete",data);
     }
 }

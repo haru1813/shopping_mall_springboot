@@ -26,6 +26,11 @@ public class CommonApiController {
     @Autowired
     private TokenProvider tokenProvider;
 
+    @GetMapping("/")
+    public String index(){
+        return "안녕";
+    }
+
     @GetMapping("/category")
     public ResponseEntity<?> category(){
         List<HashMap<String, String>> list = commonService.category();

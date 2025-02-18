@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="admin">
+    <!-- CategoryManagerDao -->
+    <select id="category_manager_search" parameterType="java.util.Map" resultType="java.util.Map">
+        select
+        t1.haruMarket_productCategory_index
+        ,   t1.haruMarket_productCategory_name
+        ,   if(t1.haruMarket_productCategory_view='1','노출','비노출') haruMarket_productCategory_view
+        ,	DATE_FORMAT(t1.haruMarket_productCategory_insertTime, '%Y년 %m월 %d일 %H시 %i분') haruMarket_productCategory_insertTime
+        ,	(select haruMarket_user_id from harumarket_user where haruMarket_user_index=t1.haruMarket_productCategory_insertUserIndex) haruMarket_productCategory_insertUserIndex
+        ,	DATE_FORMAT(t1.haruMarket_productCategory_updateTime, '%Y년 %m월 %d일 %H시 %i분') haruMarket_productCategory_updateTime
+        ,	(select haruMarket_user_id from harumarket_user where haruMarket_user_index=t1.haruMarket_productCategory_updateUserIndex) haruMarket_productCategory_updateUserIndex
+        from harumarket_productcategory t1
+        where ('${haruMarket_productCategory_name}'='' or t1.haruMarket_productCategory_name like '%${haruMarket_productCategory_name}%')
+        and ('${haruMarket_productCategory_view}'='' or t1.haruMarket_productCategory_view = '${haruMarket_productCategory_view}')
+    </select>
+
+    <insert id="category_manager_insert" parameterType="java.util.Map">
+        insert into harumarket_productcategory(
+        haruMarket_productCategory_name,
+        haruMarket_productCategory_view,
+        haruMarket_productCategory_insertUserIndex
+        )
+        values(
+        #{haruMarket_productCategory_name},
+        #{haruMarket_productCategory_view},
+        ${haruMarket_productCategory_insertUserIndex}
+        )
+    </insert>
+
+    <select id="category_manager_view" parameterType="int" resultType="java.util.Map">
+        select
+        t1.haruMarket_productCategory_name
+        ,	t1.haruMarket_productCategory_view
+        from harumarket_productcategory t1
+        where t1.haruMarket_productCategory_index = ${haruMarket_productCategory_index}
+    </select>
+
+    <update id="category_manager_update" parameterType="java.util.Map">
+        update harumarket_productcategory set
+        haruMarket_productCategory_name=#{haruMarket_productCategory_name},
+        haruMarket_productCategory_view=#{haruMarket_productCategory_view},
+        haruMarket_productCategory_updateTime=now(),
+        haruMarket_productCategory_updateUserIndex=${haruMarket_productCategory_updateUserIndex}
+        where haruMarket_productCategory_index=${haruMarket_productCategory_index}
+    </update>
+
+    <!-- ProductColorManagerDao -->
+    <select id="productColor_manager_search" parameterType="java.util.Map" resultType="java.util.Map">
+        select
+        t1.harumarket_productColor_index
+        ,   t1.harumarket_productColor_name
+        ,	DATE_FORMAT(t1.harumarket_productColor_insertTime, '%Y년 %m월 %d일 %H시 %i분') harumarket_productColor_insertTime
+        ,	(select haruMarket_user_id from harumarket_user where haruMarket_user_index=t1.harumarket_productColor_insertUserIndex) harumarket_productColor_insertUserIndex
+        ,	DATE_FORMAT(t1.harumarket_productColor_updateTime, '%Y년 %m월 %d일 %H시 %i분') harumarket_productColor_updateTime
+        ,	(select haruMarket_user_id from harumarket_user where haruMarket_user_index=t1.harumarket_productColor_updateUserIndex) harumarket_productColor_updateUserIndex
+        from harumarket_productcolor t1
+        where ('${harumarket_productColor_name}'='' or t1.harumarket_productColor_name like '%${harumarket_productColor_name}%')
+    </select>
+
+    <insert id="productColor_manager_insert" parameterType="java.util.Map">
+        insert into harumarket_productcolor(
+        harumarket_productColor_name,
+        harumarket_productColor_insertUserIndex
+        )
+        values(
+        #{harumarket_productColor_name},
+        ${harumarket_productColor_insertUserIndex}
+        )
+    </insert>
+
+    <select id="productColor_manager_view" parameterType="int" resultType="java.util.Map">
+        select
+        t1.harumarket_productColor_name
+        from harumarket_productColor t1
+        where t1.harumarket_productColor_index = ${harumarket_productColor_index}
+    </select>
+
+    <update id="productColor_manager_update" parameterType="java.util.Map">
+        update harumarket_productcolor set
+        harumarket_productColor_name=#{harumarket_productColor_name},
+        harumarket_productColor_updateTime=now(),
+        harumarket_productColor_updateUserIndex=${harumarket_productColor_updateUserIndex}
+        where harumarket_productColor_index=${harumarket_productColor_index}
+    </update>
+
+    <!-- ProductSizeManagerDao -->
+    <select id="productSize_manager_search" parameterType="java.util.Map" resultType="java.util.Map">
+        select
+        t1.harumarket_productSize_index
+        ,   t1.harumarket_productSize_name
+        ,	DATE_FORMAT(t1.harumarket_productSize_insertTime, '%Y년 %m월 %d일 %H시 %i분') harumarket_productSize_insertTime
+        ,	(select haruMarket_user_id from harumarket_user where haruMarket_user_index=t1.harumarket_productSize_insertUserIndex) harumarket_productSize_insertUserIndex
+        ,	DATE_FORMAT(t1.harumarket_productSize_updateTime, '%Y년 %m월 %d일 %H시 %i분') harumarket_productSize_updateTime
+        ,	(select haruMarket_user_id from harumarket_user where haruMarket_user_index=t1.harumarket_productSize_updateUserIndex) harumarket_productSize_updateUserIndex
+        from harumarket_productsize t1
+        where ('${harumarket_productSize_name}'='' or t1.harumarket_productSize_name like '%${harumarket_productSize_name}%')
+    </select>
+
+    <insert id="productSize_manager_insert" parameterType="java.util.Map">
+        insert into harumarket_productsize(
+        harumarket_productSize_name,
+        harumarket_productSize_insertUserIndex
+        )
+        values(
+        #{harumarket_productSize_name},
+        ${harumarket_productSize_insertUserIndex}
+        )
+    </insert>
+
+    <select id="productSize_manager_view" parameterType="int" resultType="java.util.Map">
+        select
+        t1.harumarket_productSize_name
+        from harumarket_productsize t1
+        where t1.harumarket_productSize_index = ${harumarket_productSize_index}
+    </select>
+
+    <update id="productSize_manager_update" parameterType="java.util.Map">
+        update harumarket_productsize set
+        harumarket_productSize_name=#{harumarket_productSize_name},
+        harumarket_productSize_updateTime=now(),
+        harumarket_productSize_updateUserIndex=${harumarket_productSize_updateUserIndex}
+        where harumarket_productSize_index=${harumarket_productSize_index}
+    </update>
+
+    <!-- ProductManagerDao -->
+    <select id="productManager_search" parameterType="java.util.Map" resultType="java.util.Map">
+        select
+        t1.harumarket_product_index,
+        t2.haruMarket_productCategory_name,
+        t1.harumarket_product_name,
+        FORMAT(t1.harumarket_product_originPrice,0) harumarket_product_originPrice,
+        FORMAT(t1.harumarket_product_salePrice,0) harumarket_product_salePrice,
+        if(t1.harumarket_product_view=1,'노출','비노출') harumarket_product_view,
+        if(t1.harumarket_product_advertiseView=1,'노출','비노출') harumarket_product_advertiseView,
+        if(t1.harumarket_product_colorView=1,'노출','비노출') harumarket_product_colorView,
+        if(t1.harumarket_product_sizeView=1,'노출','비노출') harumarket_product_sizeView,
+        (SELECT GROUP_CONCAT(harumarket_productColor_name)
+        FROM harumarket_productcolor
+        WHERE CONCAT(',', REPLACE(REPLACE(t1.harumarket_product_colorIndexs, '{', ''), '}', ''), ',')
+        LIKE CONCAT('%,', harumarket_productColor_index, ',%')
+        ) AS harumarket_product_colorIndexs,
+        (SELECT GROUP_CONCAT(harumarket_productSize_name)
+        FROM harumarket_productsize
+        WHERE CONCAT(',', REPLACE(REPLACE(t1.harumarket_product_sizeIndexs, '{', ''), '}', ''), ',')
+        LIKE CONCAT('%,', harumarket_productSize_index, ',%')
+        ) AS harumarket_product_sizeIndexs,
+        DATE_FORMAT(t1.harumarket_product_insertTime, '%Y년 %m월 %d일 %H시 %i분') harumarket_product_insertTime,
+        (select haruMarket_user_id from harumarket_user where haruMarket_user_index=t1.harumarket_product_insertUserIndex) harumarket_product_insertUserIndex,
+        DATE_FORMAT(t1.harumarket_product_updateTime, '%Y년 %m월 %d일 %H시 %i분') harumarket_product_updateTime,
+        (select haruMarket_user_id from harumarket_user where haruMarket_user_index=t1.harumarket_product_updateUserIndex) harumarket_product_updateUserIndex
+        from harumarket_product t1
+        inner join harumarket_productcategory t2 on t1.haruMarket_productCategory_index=t2.haruMarket_productCategory_index
+        where
+        ('${harumarket_product_view}'='' or t1.harumarket_product_view = '${harumarket_product_view}') and
+        ('${haruMarket_productCategory_index}'='' or t1.haruMarket_productCategory_index = '${haruMarket_productCategory_index}') and
+        ('${harumarket_product_name}'='' or t1.harumarket_product_name like '%${harumarket_product_name}%') and
+        ('${harumarket_product_colorView}'='' or t1.harumarket_product_colorView = '${harumarket_product_colorView}') and
+        ('${harumarket_product_sizeView}'='' or t1.harumarket_product_sizeView = '${harumarket_product_sizeView}') and
+        ('${harumarket_product_colorIndexs}'='' or t1.harumarket_product_colorIndexs like '%${harumarket_product_colorIndexs}%') and
+        ('${harumarket_product_sizeIndexs}'='' or t1.harumarket_product_sizeIndexs like '%${harumarket_product_sizeIndexs}%') and
+        (('${harumarket_product_originPrice_min}'='' or '${harumarket_product_originPrice_max}'='') or t1.harumarket_product_originPrice between '${harumarket_product_originPrice_min}' and '${harumarket_product_originPrice_max}') and
+        (('${harumarket_product_salePrice_min}'='' or '${harumarket_product_salePrice_max}'='') or t1.harumarket_product_salePrice between '${harumarket_product_salePrice_min}' and '${harumarket_product_salePrice_max}') and
+        ('${harumarket_product_advertiseView}'='' or t1.harumarket_product_advertiseView = '${harumarket_product_advertiseView}')
+    </select>
+
+    <insert id="productManager_insert" parameterType="java.util.Map">
+        insert into harumarket_product(
+        haruMarket_productCategory_index,
+        harumarket_product_name,
+        harumarket_product_colorView,
+        harumarket_product_sizeView,
+        harumarket_product_colorIndexs,
+        harumarket_product_sizeIndexs,
+        harumarket_product_picture,
+        harumarket_product_content,
+        harumarket_product_insertUserIndex,
+        harumarket_product_view,
+        harumarket_product_originPrice,
+        harumarket_product_salePrice,
+        harumarket_product_advertiseView
+        ) values(
+        #{haruMarket_productCategory_index},
+        #{harumarket_product_name},
+        #{harumarket_product_colorView},
+        #{harumarket_product_sizeView},
+        #{harumarket_product_colorIndexs},
+        #{harumarket_product_sizeIndexs},
+        #{harumarket_product_picture},
+        #{harumarket_product_content},
+        #{harumarket_product_insertUserIndex},
+        #{harumarket_product_view},
+        #{harumarket_product_originPrice},
+        #{harumarket_product_salePrice},
+        #{harumarket_product_advertiseView}
+        );
+    </insert>
+
+    <select id="productManager_view" parameterType="int" resultType="java.util.Map">
+        select
+        t2.haruMarket_productCategory_name
+        ,   t1.haruMarket_productCategory_index
+        ,	t1.harumarket_product_name
+        ,	t1.harumarket_product_originPrice
+        ,	t1.harumarket_product_salePrice
+        ,	if(t1.harumarket_product_view=1,'노출','비노출') harumarket_product_view
+        ,	if(t1.harumarket_product_colorView=1,'노출','비노출') harumarket_product_colorView
+        ,	if(t1.harumarket_product_sizeView=1,'노출','비노출') harumarket_product_sizeView
+        ,	if(t1.harumarket_product_advertiseView=1,'노출','비노출') harumarket_product_advertiseView
+        ,	t1.harumarket_product_colorIndexs
+        ,	t1.harumarket_product_sizeIndexs
+        ,	DATE_FORMAT(t1.harumarket_product_insertTime, '%Y년 %m월 %d일 %H시 %i분') harumarket_product_insertTime
+        ,	(select haruMarket_user_id from harumarket_user where haruMarket_user_index=t1.harumarket_product_insertUserIndex) harumarket_product_insertUserIndex
+        ,	DATE_FORMAT(t1.harumarket_product_updateTime, '%Y년 %m월 %d일 %H시 %i분') harumarket_product_updateTime
+        ,	(select haruMarket_user_id from harumarket_user where haruMarket_user_index=t1.harumarket_product_updateUserIndex) harumarket_product_updateUserIndex
+        ,   t1.harumarket_product_picture
+        ,   t1.harumarket_product_content
+        from	harumarket_product t1
+        inner join	harumarket_productcategory t2 on t1.haruMarket_productCategory_index=t2.haruMarket_productCategory_index
+        where t1.harumarket_product_index = ${harumarket_product_index};
+    </select>
+
+    <update id="productManager_update" parameterType="java.util.Map">
+        update harumarket_product set
+        haruMarket_productCategory_index=#{haruMarket_productCategory_index},
+        harumarket_product_name=#{harumarket_product_name},
+        harumarket_product_colorView=#{harumarket_product_colorView},
+        harumarket_product_sizeView=#{harumarket_product_sizeView},
+        harumarket_product_colorIndexs=#{harumarket_product_colorIndexs},
+        harumarket_product_sizeIndexs=#{harumarket_product_sizeIndexs},
+        harumarket_product_picture=#{harumarket_product_picture},
+        harumarket_product_content=#{harumarket_product_content},
+        harumarket_product_view=#{harumarket_product_view},
+        harumarket_product_originPrice=#{harumarket_product_originPrice},
+        harumarket_product_salePrice=#{harumarket_product_salePrice},
+        harumarket_product_advertiseView=#{harumarket_product_advertiseView},
+        harumarket_product_updateTime=now(),
+        harumarket_product_updateUserIndex=#{harumarket_product_updateUserIndex}
+        where harumarket_product_index=#{harumarket_product_index}
+    </update>
+
+    <!-- UserManagerDao -->
+    <select id="user_manager_search" parameterType="java.util.Map" resultType="java.util.Map">
+        select
+        t1.haruMarket_user_index
+        ,	t1.haruMarket_user_id
+        ,	t1.haruMarket_user_postCode
+        ,	t1.haruMarket_user_basicAddress
+        ,	t1.haruMarket_user_detailAddress
+        ,	t1.haruMarket_user_birthday
+        ,	if(t1.haruMarket_user_gender='male','남자','여자') haruMarket_user_gender
+        ,	t1.haruMarket_user_name
+        ,	t1.haruMarket_user_phone
+        ,	DATE_FORMAT(t1.haruMarket_user_insertTime, '%Y년 %m월 %d일 %H시 %i분') haruMarket_user_insertTime
+        ,	DATE_FORMAT(t1.haruMarket_user_updateTime, '%Y년 %m월 %d일 %H시 %i분') haruMarket_user_updateTime
+        ,	(select haruMarket_user_id from harumarket_user where haruMarket_user_index=t1.haruMarket_user_updateUserIndex) haruMarket_user_updateUserIndex
+        ,   t1.haruMarket_user_role
+        from harumarket_user t1
+        where ('${haruMarket_user_id}'='' or t1.haruMarket_user_id like '%${haruMarket_user_id}%')
+        and ('${haruMarket_user_name}'='' or t1.haruMarket_user_name like '%${haruMarket_user_name}%')
+        and ('${haruMarket_user_basicAddress}'='' or t1.haruMarket_user_basicAddress like '%${haruMarket_user_basicAddress}%')
+        and ('${haruMarket_user_gender}'='' or t1.haruMarket_user_gender = '${haruMarket_user_gender}')
+    </select>
+
+    <select id="user_manager_view" parameterType="int" resultType="java.util.Map">
+        select
+        t1.haruMarket_user_index
+        ,	t1.haruMarket_user_id
+        ,	t1.haruMarket_user_postCode
+        ,	t1.haruMarket_user_basicAddress
+        ,	t1.haruMarket_user_detailAddress
+        ,	t1.haruMarket_user_birthday
+        ,	t1.haruMarket_user_gender
+        ,	t1.haruMarket_user_name
+        ,	t1.haruMarket_user_phone
+        ,	DATE_FORMAT(t1.haruMarket_user_insertTime, '%Y년 %m월 %d일 %H시 %i분') haruMarket_user_insertTime
+        ,	DATE_FORMAT(t1.haruMarket_user_updateTime, '%Y년 %m월 %d일 %H시 %i분') haruMarket_user_updateTime
+        ,	(select haruMarket_user_id from harumarket_user where haruMarket_user_index=t1.haruMarket_user_updateUserIndex) haruMarket_user_updateUserIndex
+        ,   t1.haruMarket_user_role
+        from harumarket_user t1
+        where t1.haruMarket_user_index = ${haruMarket_user_index}
+    </select>
+
+    <update id="user_manager_update" parameterType="java.util.Map">
+        update harumarket_user set
+        haruMarket_user_id=#{haruMarket_user_id},
+        haruMarket_user_name=#{haruMarket_user_name},
+        haruMarket_user_gender=#{haruMarket_user_gender},
+        haruMarket_user_birthday=#{haruMarket_user_birthday},
+        haruMarket_user_phone=#{haruMarket_user_phone},
+        haruMarket_user_postCode=#{haruMarket_user_postCode},
+        haruMarket_user_basicAddress=#{haruMarket_user_basicAddress},
+        haruMarket_user_detailAddress=#{haruMarket_user_detailAddress},
+        haruMarket_user_role=#{haruMarket_user_role},
+        haruMarket_user_updateTime=now(),
+        haruMarket_user_updateUserIndex=${haruMarket_user_updateUserIndex}
+        where haruMarket_user_index=${haruMarket_user_index}
+    </update>
+
+    <!-- CartManagerDao -->
+    <select id="cart_manager_search" parameterType="java.util.Map" resultType="java.util.Map">
+        select
+        t1.harumarket_userBasket_index
+        ,	t1.haruMarket_user_index
+        ,	t2.haruMarket_user_id
+        ,	t1.harumarket_product_index
+        ,	t3.harumarket_product_name
+        ,	t1.harumarket_productColor_index
+        ,	t4.harumarket_productColor_name
+        ,	t1.harumarket_productSize_index
+        ,	t5.harumarket_productSize_name
+        ,	t1.harumarket_userBasket_account
+        ,	t3.harumarket_product_salePrice
+        ,	DATE_FORMAT(t1.harumarket_userBasket_insertTime, '%Y년 %m월 %d일 %H시 %i분') harumarket_userBasket_insertTime
+        from			harumarket_userbasket t1
+        inner join	harumarket_user t2 on t1.haruMarket_user_index = t2.haruMarket_user_index
+        inner join	harumarket_product t3 on t1.harumarket_product_index = t3.harumarket_product_index
+        left join	harumarket_productcolor t4 on t1.harumarket_productColor_index = t4.harumarket_productColor_index
+        left join	harumarket_productsize t5 on t1.harumarket_productSize_index = t5.harumarket_productSize_index
+        where       ('${haruMarket_user_id}'='' or t2.haruMarket_user_id like '%${haruMarket_user_id}%')
+        and         ('${harumarket_product_name}'='' or t3.harumarket_product_name like '%${harumarket_product_name}%')
+    </select>
+
+    <delete id="cart_manager_delete" parameterType="int">
+        delete from harumarket_userbasket where harumarket_userBasket_index=#{harumarket_userBasket_index};
+    </delete>
+
+    <!-- BuyManagerDao -->
+    <select id="buy_manager_search1" parameterType="java.util.Map" resultType="java.util.Map">
+        select
+        t1.haruMarket_BuyMaster_index
+        ,	t1.haruMarket_user_index
+        ,	t2.haruMarket_user_id
+        ,	t1.haruMarket_BuyMaster_order
+        ,	t1.haruMarket_BuyMaster_buyerName
+        ,	t1.haruMarket_BuyMaster_buyerPostcode
+        ,	t1.haruMarket_BuyMaster_buyerAddr
+        ,	t1.haruMarket_BuyMaster_buyerMethod
+        ,	t1.haruMarket_BuyMaster_status
+        ,	t1.haruMarket_BuyMaster_amount
+        ,	DATE_FORMAT(t1.haruMarket_BuyMaster_insertTime, '%Y년 %m월 %d일 %H시 %i분') haruMarket_BuyMaster_insertTime
+        from	harumarket_buymaster t1
+        inner join	harumarket_user t2 on t1.haruMarket_user_index = t2.haruMarket_user_index
+        where       ('${haruMarket_user_id}'='' or t2.haruMarket_user_id like '%${haruMarket_user_id}%')
+        and         ('${haruMarket_BuyMaster_order}'='' or t1.haruMarket_BuyMaster_order like '%${haruMarket_BuyMaster_order}%')
+        and         ('${haruMarket_BuyMaster_buyerName}'='' or t1.haruMarket_BuyMaster_buyerName like '%${haruMarket_BuyMaster_buyerName}%')
+        and         ('${haruMarket_BuyMaster_buyerAddr}'='' or t1.haruMarket_BuyMaster_buyerAddr like '%${haruMarket_BuyMaster_buyerAddr}%')
+        and         ('${haruMarket_BuyMaster_status}'='' or t1.haruMarket_BuyMaster_status like '%${haruMarket_BuyMaster_status}%')
+    </select>
+
+    <select id="buy_manager_search2" parameterType="String" resultType="java.util.Map">
+        select
+        t1.harumarket_buyDetail_index
+        ,	t1.harumarket_product_index
+        ,	t3.harumarket_product_name
+        ,	t1.harumarket_productColor_index
+        ,	t4.harumarket_productColor_name
+        ,	t1.harumarket_productSize_index
+        ,	t5.harumarket_productSize_name
+        ,	t1.harumarket_buyDetail_account
+        ,	t1.harumarket_buyDetail_amount
+        from	harumarket_buydetail t1
+        inner join	harumarket_user t2 on t1.haruMarket_user_index = t2.haruMarket_user_index
+        inner join	harumarket_product t3 on t1.harumarket_product_index = t3.harumarket_product_index
+        left join	harumarket_productcolor t4 on t1.harumarket_productColor_index = t4.harumarket_productColor_index
+        left join	harumarket_productsize t5 on t1.harumarket_productSize_index = t5.harumarket_productSize_index
+        where       t1.haruMarket_BuyMaster_order='${haruMarket_BuyMaster_order}'
+    </select>
+
+    <update id="buy_manager_update" parameterType="java.util.Map">
+        update harumarket_buymaster set haruMarket_BuyMaster_status=#{haruMarket_BuyMaster_status} where haruMarket_BuyMaster_index=${haruMarket_BuyMaster_index}
+    </update>
+</mapper>

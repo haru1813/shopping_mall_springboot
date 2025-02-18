@@ -43,8 +43,8 @@ public class SecurityConfig {
 
         http.cors().configurationSource(request -> {
             CorsConfiguration config = new CorsConfiguration();
-            config.setAllowedOrigins(Arrays.asList("http://localhost:8081","http://localhost:8082","http://localhost:3000")); // 허용할 도메인
-            config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE")); // 허용할 HTTP 메서드
+            config.setAllowedOrigins(Arrays.asList("http://localhost:8081","http://localhost:8082","http://localhost:3000", "https://market3.haru.company", "https://market4.haru.company")); // 허용할 도메인
+            config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE","PATCH")); // 허용할 HTTP 메서드
             config.setAllowedHeaders(Arrays.asList("*")); // 허용할 헤더
             config.addExposedHeader("Authorization");
             return config;
@@ -56,6 +56,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorize -> authorize
                 .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
                         .requestMatchers("/user/**").hasAuthority("사용자")
+                        .requestMatchers("/user/**").hasAuthority("관리자")
+                        .requestMatchers("/admin/**").hasAuthority("관리자")
 //                .requestMatchers("/api/v1/user/**").hasAnyRole("USER","MANAGER","ADMIN")
 //                .requestMatchers("/api/v1/manager/**").hasAnyRole("MANAGER","ADMIN")
 //                .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")

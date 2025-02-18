@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import park.haru.user.dao.BusketDao;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,5 +40,13 @@ public class BusketService {
     @Transactional(rollbackOn = SQLException.class)
     public int harumarket_userbasket_update(Map<String, Object> data){
         return busketDao.harumarket_userbasket_update(data);
+    }
+
+    public List<HashMap<String,String>> basket_select(int haruMarket_user_index){
+        return busketDao.basket_select(haruMarket_user_index);
+    }
+
+    public int basket_delete(Map<String, Object> data){
+        return busketDao.basket_delete(data);
     }
 }

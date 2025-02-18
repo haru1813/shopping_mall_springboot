@@ -30,5 +30,5 @@ jwt:
   issuer: haru1813@naver.com
   secret_key: haru
   header: Authorization
-  active: 10
-  refresh: 20
+  active: 30
+  refresh: 60

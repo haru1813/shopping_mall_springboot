@@ -66,4 +66,29 @@ public class BusketApiController {
         return ResponseEntity.ok().body(res);
     };
 
+    @PostMapping("basket_select")
+    public ResponseEntity<?> basket_select() throws JsonProcessingException {
+        int haruMarket_user_index = TokenExportInterceptor.haruMarket_user_index;
+        List<HashMap<String,String>> res = busketService.basket_select(haruMarket_user_index);
+
+        return ResponseEntity.ok().body(res);
+    }
+
+    @PostMapping("basket_delete")
+    public ResponseEntity<?> basket_delete(
+            @RequestBody String reqData
+    ) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Map<String, Object>> list = objectMapper.readValue(reqData, new TypeReference<List<Map<String, Object>>>() {});
+        int haruMarket_user_index = TokenExportInterceptor.haruMarket_user_index;
+
+        for (Map<String, Object> item : list){
+            item.put("haruMarket_user_index",haruMarket_user_index);
+            busketService.basket_delete(item);
+        }
+
+        Map<String, String> res = new HashMap<>();
+        res.put("msg","장바구니 상품을 삭제하였습니다.");
+        return ResponseEntity.ok().body(res);
+    }
 }
